@@ -1,0 +1,50 @@
+// include the library code:
+#include <LiquidCrystal.h>
+#include <Servo.h>
+
+ Servo myservo;
+
+// initialize the library by associating any needed LCD interface pin
+// with the arduino pin number it is connected to
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+const int buttonPin = 6;
+
+
+//variables
+int buttonState = 0;
+int count = 0;
+
+void setup() {
+  // put your setup code here, to run once:
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  pinMode(buttonPin, INPUT);
+  myservo.attach(7);
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+      //State 00
+  buttonState = digitalRead(buttonPin);
+
+  if (buttonState == HIGH){
+    //State01 : Rotates motor 90deg
+      myservo.write(90);
+      count++;
+  }
+  else if (count >= 1){ 
+     //State11 : Rotates motor 90deg and LCD is ON
+      myservo.write(90);
+      lcd.setCursor(0, 1);
+      lcd.print("Collect Coupon");
+      delay(1000); 
+   }
+  
+  else {
+     //Turn LCD OFF
+        lcd.clear(); 
+    }
+}
